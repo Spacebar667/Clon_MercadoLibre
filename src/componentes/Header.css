@@ -1,0 +1,31 @@
+/* src/components/Header.css */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff159;
+    padding: 10px 20px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+  }
+  
+  .search {
+    flex: 1;
+    margin: 0 20px;
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+  }
+  
+  .icons a {
+    margin-left: 15px;
+    font-size: 20px;
+    text-decoration: none;
+    color: black;
+  }
+  

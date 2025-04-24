@@ -1,0 +1,21 @@
+/* src/components/ProductCard.css */
+.product-card {
+    width: 200px;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .product-card:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .product-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+  }
+  

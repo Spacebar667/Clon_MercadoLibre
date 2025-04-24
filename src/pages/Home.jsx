@@ -1,37 +1,30 @@
-import './Home.css';
+import { useEffect, useState } from "react";
+import Header from "../componentes/Header";
+import Banner from "../componentes/Banner";
+import ProductCard from "../componentes/ProductCard";
 
 function Home() {
-  return (
-    <div className="home-container">
-      {/* Nuevo wrapper */}
-      <div className="inner-container">
-        <header className="header">
-          <h1 className="logo">Mercado Clon</h1>
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            className="search-bar"
-          />
-          <button className="search-button">Buscar</button>
-        </header>
+  const [products, setProducts] = useState([]);
 
-        <main className="main">
-          <h2>Productos destacados</h2>
-          <div className="product-grid">
-            {[1, 2, 3, 4, 5, 6].map((id) => (
-              <div key={id} className="product-card">
-                <img
-                  src={`https://via.placeholder.com/150`}
-                  alt={`Producto #${id}`}
-                />
-                <h3>Producto #{id}</h3>
-                <p>$9.999</p>
-              </div>
-            ))}
-          </div>
-        </main>
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then(res => res.json())
+      .then(data => setProducts(data));
+  }, []);
+
+  return (
+    <>
+      <Header />
+      <Banner />
+      <div style={{ padding: '20px' }}>
+        <h2>Ofertas del día</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -1,0 +1,8 @@
+/* src/components/Banner.css */
+.banner img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  
