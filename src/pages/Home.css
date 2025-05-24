@@ -1,63 +1,84 @@
 /* src/pages/Home.css */
 
-.home-container {
-    background-color: #f5f5f5;
-    min-height: 100vh;
+/* Contenedor general ya definido: .home-container y .inner-container */
+
+.categories {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.category-button {
+  padding: 8px 16px;
+  background-color: #eee;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.category-button:hover {
+  background-color: #2874f0;
+  color: white;
+}
+
+.category-button.active {
+  background-color: #2874f0;
+  color: white;
+}
+
+/* Ajuste para el título dinámico */
+.category-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #222;
+}
+
+/* El grid de productos usa tu clase existente */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Inputs de búsqueda y filtros */
+.filter-bar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filter-bar input[type="number"],
+.filter-bar input[type="text"] {
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 150px;
+  transition: border-color 0.3s ease;
+}
+
+.filter-bar input[type="text"] {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.filter-bar input[type="number"]:focus,
+.filter-bar input[type="text"]:focus {
+  outline: none;
+  border-color: #3483fa;
+  box-shadow: 0 0 5px rgba(52, 131, 250, 0.5);
+}
+
+/* Para que los inputs se vean bien en móviles */
+@media (max-width: 600px) {
+  .filter-bar input[type="number"],
+  .filter-bar input[type="text"] {
+    width: 100%;
   }
-  
-  /* Nuevo: centra y limita ancho */
-  .inner-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 0;
-    background-color: #ffe600;
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-    color: #333;
-  }
-  
-  .search-bar {
-    flex: 1;
-    margin: 0 1rem;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 4px;
-  }
-  
-  .search-button {
-    padding: 0.5rem 1rem;
-    background-color: #3483fa;
-    color: white;
-    border: none;
-    border-radius: 4px;
-  }
-  
-  .main {
-    padding: 2rem 0;
-    text-align: left; /* evita centrar todo el texto */
-  }
-  
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .product-card {
-    background: white;
-    border: 1px solid #eee;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 6px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
-  }
-  
+}
