@@ -1,7 +1,7 @@
 // src/pages/Profile.jsx
 import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../context/UserContext';
-import { supabase } from '../supabaseClient';
+import { UserContext } from '../../context/UserContext';
+import { supabase } from '../../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
 function Profile() {

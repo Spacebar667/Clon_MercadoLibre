@@ -1,8 +1,8 @@
 // src/pages/Home.jsx
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Banner from "../componentes/Banner";
-import ProductCard from "../componentes/ProductCard";
+import Banner from "../banner/Banner";
+import ProductCard from "../product_card/ProductCard";
 import "./Home.css";
 
 function Home() {

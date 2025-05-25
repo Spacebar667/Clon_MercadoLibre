@@ -1,6 +1,6 @@
 // src/pages/Cart.jsx
 import React, { useContext } from 'react';
-import { CartContext } from '../context/CartContext';
+import { CartContext } from '../../context/CartContext';
 import './Cart.css';
 
 function Cart() {

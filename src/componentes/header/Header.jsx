@@ -2,8 +2,8 @@
 import './Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
-import { UserContext } from '../context/UserContext';
-import { supabase } from '../supabaseClient';
+import { UserContext } from '../../context/UserContext';
+import { supabase } from '../../supabaseClient';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
