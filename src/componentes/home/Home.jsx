@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Banner from "../banner/Banner";
@@ -18,30 +17,34 @@ function Home() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Extraer search desde query string
   const queryParams = new URLSearchParams(location.search);
   const searchQuery = queryParams.get("search") || "";
 
+  // Obtener categorías desde DummyJSON
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products/categories")
+    fetch("https://dummyjson.com/products/categories")
       .then(res => res.json())
       .then(data => setCategories(data));
   }, []);
 
+  // Obtener productos, con o sin categoría
   useEffect(() => {
     setLoading(true);
-    let url = "https://fakestoreapi.com/products";
+    let url = "https://dummyjson.com/products?limit=100";
     if (selectedCategory) {
-      url = `https://fakestoreapi.com/products/category/${encodeURIComponent(selectedCategory)}`;
+      url = `https://dummyjson.com/products/category/${encodeURIComponent(selectedCategory)}?limit=100`;
     }
+
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        setProducts(data);
+        setProducts(data.products || []); // DummyJSON devuelve { products: [] }
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   }, [selectedCategory]);
 
+  // Filtrar productos por búsqueda y precio
   useEffect(() => {
     let temp = [...products];
 
@@ -74,13 +77,14 @@ function Home() {
           </button>
           {categories.map(cat => (
             <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`category-button ${selectedCategory === cat ? "active" : ""}`}
+              key={cat.slug} // O cat.name si es más seguro
+              onClick={() => setSelectedCategory(cat.slug)} // O cat.name según tu lógica
+              className={`category-button ${selectedCategory === cat.slug ? "active" : ""}`}
             >
-              {cat}
+              {cat.name}
             </button>
           ))}
+
         </div>
 
         <div className="filter-bar">

@@ -1,5 +1,5 @@
-// src/componentes/Layout.jsx
-import Header from './Header';
+// src/componentes/layout/Layout.jsx
+import Header from '../header/Header';
 import { Outlet } from 'react-router-dom';
 
 function Layout() {

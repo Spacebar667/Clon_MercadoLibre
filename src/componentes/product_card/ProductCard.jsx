@@ -10,7 +10,8 @@ function ProductCard({ product }) {
   return (
     <div className="product-card">
       <Link to={`/product/${product.id}`}>
-        <img src={product.image} alt={product.title} />
+      <img src={product.thumbnail} alt={product.title} />
+
         <h3>${product.price}</h3>
         <p>{product.title}</p>
       </Link>

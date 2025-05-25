@@ -16,9 +16,10 @@ function ProductDetail() {
   const [newComment, setNewComment] = useState('');
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
+    fetch(`https://dummyjson.com/products/${id}`)
       .then(res => res.json())
-      .then(setProduct);
+      .then(setProduct)
+      .catch(err => console.error('Error al cargar el producto:', err));
   }, [id]);
 
   if (!product) return <div>Cargando...</div>;
@@ -37,7 +38,7 @@ function ProductDetail() {
 
     const newReview = {
       id: reviews.length + 1,
-      user: 'Usuario', // Aquí podrías poner el usuario real si tienes autenticación
+      user: 'Usuario',
       rating: newRating,
       comment: newComment,
     };
@@ -49,7 +50,7 @@ function ProductDetail() {
 
   return (
     <div className="product-detail-container">
-      <img src={product.image} alt={product.title} />
+      <img src={product.thumbnail} alt={product.title} />
       <div className="product-info">
         <h1>{product.title}</h1>
         <p className="product-description">{product.description}</p>
