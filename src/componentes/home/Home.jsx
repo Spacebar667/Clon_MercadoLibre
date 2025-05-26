@@ -1,126 +1,149 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Banner from "../banner/Banner";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import Carousel from "../carousel/Carousel";
 import ProductCard from "../product_card/ProductCard";
 import "./Home.css";
 
 function Home() {
-  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(location.search);
   const searchQuery = queryParams.get("search") || "";
+  const selectedFromURL = queryParams.get("category");
 
-  // Obtener categorías desde DummyJSON
+  // Cargar categorías
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then(res => res.json())
-      .then(data => setCategories(data));
+      .then(data => {
+        if (Array.isArray(data)) setCategories(data);
+        else {
+          console.error("Categorías no válidas:", data);
+          setCategories([]);
+        }
+      })
+      .catch(error => {
+        console.error("Error al cargar categorías:", error);
+        setCategories([]);
+      });
   }, []);
 
-  // Obtener productos, con o sin categoría
+  useEffect(() => {
+    setSelectedCategory(selectedFromURL || null);
+  }, [selectedFromURL]);
+
   useEffect(() => {
     setLoading(true);
-    let url = "https://dummyjson.com/products?limit=100";
-    if (selectedCategory) {
-      url = `https://dummyjson.com/products/category/${encodeURIComponent(selectedCategory)}?limit=100`;
-    }
+    let url = selectedCategory
+      ? `https://dummyjson.com/products/category/${encodeURIComponent(selectedCategory)}?limit=100`
+      : "https://dummyjson.com/products?limit=100";
 
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        setProducts(data.products || []); // DummyJSON devuelve { products: [] }
+        const productsArray = Array.isArray(data.products) ? data.products : [];
+        setProducts(productsArray);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(error => {
+        console.error("Error al cargar productos:", error);
+        setProducts([]);
+        setLoading(false);
+      });
   }, [selectedCategory]);
 
-  // Filtrar productos por búsqueda y precio
+  // Filtrar productos solo por búsqueda de texto
   useEffect(() => {
     let temp = [...products];
-
-    if (minPrice !== "") {
-      temp = temp.filter(p => p.price >= parseFloat(minPrice));
-    }
-    if (maxPrice !== "") {
-      temp = temp.filter(p => p.price <= parseFloat(maxPrice));
-    }
-
     if (searchQuery.trim() !== "") {
       const lowerSearch = searchQuery.toLowerCase();
       temp = temp.filter(p => p.title.toLowerCase().includes(lowerSearch));
     }
-
     setFilteredProducts(temp);
-  }, [products, minPrice, maxPrice, searchQuery]);
+  }, [products, searchQuery]);
+
+  const handleCategoryChange = (category) => {
+    if (category === selectedCategory) {
+      navigate("/");
+    } else {
+      navigate(`/?category=${encodeURIComponent(category)}&search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
-    <div className="home-container">
-      <div className="inner-container">
-        <Banner />
-
-        <div className="categories">
-          <button
-            onClick={() => setSelectedCategory(null)}
-            className={`category-button ${selectedCategory === null ? "active" : ""}`}
-          >
-            Todas
-          </button>
-          {categories.map(cat => (
-            <button
-              key={cat.slug} // O cat.name si es más seguro
-              onClick={() => setSelectedCategory(cat.slug)} // O cat.name según tu lógica
-              className={`category-button ${selectedCategory === cat.slug ? "active" : ""}`}
-            >
-              {cat.name}
-            </button>
-          ))}
-
+    <div className="home-wrapper">
+      <div className="full-width-container">
+        <div className="carousel-container">
+          <Carousel />
         </div>
+      </div>
 
-        <div className="filter-bar">
-          <input
-            type="number"
-            placeholder="Precio mínimo"
-            value={minPrice}
-            onChange={e => setMinPrice(e.target.value)}
-            min="0"
-          />
-          <input
-            type="number"
-            placeholder="Precio máximo"
-            value={maxPrice}
-            onChange={e => setMaxPrice(e.target.value)}
-            min="0"
-          />
-        </div>
-
-        <h2 className="category-title">
-          {selectedCategory ? `Productos en "${selectedCategory}"` : "Ofertas del día"}
-        </h2>
-
-        {loading ? (
-          <p>Cargando productos...</p>
-        ) : (
-          filteredProducts.length > 0 ? (
-            <div className="product-grid">
-              {filteredProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+      <div className="home-container">
+        <div className="inner-container">
+          {loading ? (
+            <p>Cargando productos...</p>
+          ) : filteredProducts.length > 0 ? (
+            searchQuery.trim() !== "" ? (
+              // Vista de lista para búsquedas
+              <div className="product-list">
+                {filteredProducts.map((product) => (
+                  <div 
+                    key={product.id} 
+                    className="product-item-search"
+                    onClick={() => navigate(`/product/${product.id}`)}
+                  >
+                    <div className="product-image-container">
+                      <img 
+                        src={product.thumbnail || product.images?.[0]} 
+                        alt={product.title}
+                        className="product-image-search"
+                      />
+                    </div>
+                    <div className="product-info-search">
+                      <h3 className="product-title-search">{product.title}</h3>
+                      <p className="product-description-search">{product.description}</p>
+                      <div className="product-price-container">
+                        <span className="product-price-search">$ {product.price.toLocaleString()}</span>
+                        {product.discountPercentage > 0 && (
+                          <span className="product-discount">
+                            {Math.round(product.discountPercentage)}% OFF
+                          </span>
+                        )}
+                      </div>
+                      {product.rating && (
+                        <div className="product-rating-search">
+                          <span className="rating-stars">
+                            {"★".repeat(Math.floor(product.rating))}
+                            {"☆".repeat(5 - Math.floor(product.rating))}
+                          </span>
+                          <span className="rating-number">({product.rating})</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              // Vista de grilla para navegación normal
+              <div className="product-grid">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )
           ) : (
             <p>No se encontraron productos que coincidan.</p>
-          )
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

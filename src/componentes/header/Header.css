@@ -1,69 +1,138 @@
-/* src/components/Header.css */
+/* Header.css */
+@import url('https://fonts.cdnfonts.com/css/proxima-nova-2');
+
 .header {
+  font-family: 'Proxima Nova', sans-serif;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffe600;
-  padding: 1rem 2rem;
+  padding: 15px 200px; /* padding fijo en lugar de % */
+  background: rgba(255,230,0,255);
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  box-sizing: border-box; /* asegura que el padding no exceda el 100% de ancho */
 }
 
-.header-left .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+
+/* Contenedor dropdown */
+.dropdown {
+  position: relative; /* para que el menú se posicione respecto a este */
+  cursor: pointer;
+}
+
+/* El texto que dispara el dropdown */
+.dropdown > .text-link {
+  user-select: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  padding: 10px 0;
+  width: 180px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  max-height: 280px; /* aprox 7 items x 40px cada uno */
+  overflow-y: auto;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* scrollbar estilo opcional para mejor UX */
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+
+/* Cada opción del menú */
+.dropdown-menu li {
+  list-style: none;
+  padding: 8px 20px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f2f2f2;
+}
+
+/* Estilo enlaces dentro del menú */
+.dropdown-menu li a {
   text-decoration: none;
+  color: #333;
+  display: block;
+  width: 100%;
+}
+
+
+.header * {
+  font-family: inherit;
+}
+
+/* Resto de tus estilos existentes... */
+.header-left {
+  flex: 1;
+}
+
+.logo-img {
+  height: 40px;
 }
 
 .header-center {
+  flex: 2;
   display: flex;
-  flex: 1;
-  max-width: 600px;
-  margin: 0 2rem;
+  justify-content: center;
 }
 
-.search {
-  flex: 1;
-  padding: 0.5rem 1rem;
-  border: none;
+.search-container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 4px 0 0 4px;
-  font-size: 1rem;
+  font-family: 'Proxima Nova', sans-serif;
 }
 
 .search-btn {
-  padding: 0.5rem 1rem;
+  padding: 0 15px;
+  background: #ffffff;
+  color: white;
   border: none;
-  background-color: #fff;
-  border-left: 1px solid #ccc;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
-  font-size: 1.1rem;
 }
 
-.header-right .icon-link {
-  margin-left: 1rem;
-  font-size: 1.4rem;
-  text-decoration: none;
+.header-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+}
+
+.text-link, .icon-link {
   color: #333;
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.user-name {
-  margin-right: 10px;
-  font-weight: bold;
-}
-
-.logout-btn {
-  margin-right: 10px;
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.logout-btn:hover {
-  text-decoration: underline;
-}
+/* ... (tus otros estilos) ... */

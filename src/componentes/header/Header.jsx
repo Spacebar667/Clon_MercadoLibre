@@ -1,18 +1,34 @@
-// src/components/Header.jsx
-import './Header.css';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { supabase } from '../../supabaseClient';
+import './Header.css';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const hoverTimeout = useRef(null);
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Temporalmente usa categorías hardcodeadas para evitar problemas con la API
+    const hardcodedCategories = [
+      'beauty', 'fragrances', 'furniture', 'groceries', 'home-decoration',
+      'kitchen-accessories', 'laptops', 'mens-shirts', 'mens-shoes', 'mens-watches',
+      'mobile-accessories', 'motorcycle', 'skin-care', 'smartphones', 'sports-accessories',
+      'sunglasses', 'tablets', 'tops', 'vehicle', 'womens-bags', 'womens-dresses',
+      'womens-jewellery', 'womens-shoes', 'womens-watches'
+    ];
+    
+    setCategories(hardcodedCategories);
+    
+  }, []);
+
   const handleSearch = () => {
     const trimmed = searchTerm.trim();
-    if (trimmed) {
+    if (trimmed.length > 0) {
       navigate(`/?search=${encodeURIComponent(trimmed)}`);
     }
   };
@@ -24,40 +40,128 @@ function Header() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null); // Limpia el usuario del contexto
-    navigate('/'); // Redirige al inicio
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      navigate('/');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+    }
+    setShowDropdown(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+    }
+    // Añadir un pequeño delay antes de ocultar para permitir transición suave
+    hoverTimeout.current = setTimeout(() => setShowDropdown(false), 200);
   };
 
   return (
     <header className="header">
       <div className="header-left">
-        <Link to="/" className="logo">🛍️ MercadoFake</Link>
+        <Link to="/" className="logo" aria-label="Página principal">
+          <img
+            src="https://i.ibb.co/m5c8hgRx/Image-mercado-logo.png"
+            alt="Logo Mercado"
+            className="logo-img"
+          />
+        </Link>
       </div>
 
       <div className="header-center">
-        <input
-          className="search"
-          type="text"
-          placeholder="Buscar productos..."
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button className="search-btn" onClick={handleSearch}>🔍</button>
+        <div className="search-container">
+          <input
+            className="search-input"
+            type="search"
+            placeholder="Buscar productos, marcas y más..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
+            aria-label="Buscar productos"
+          />
+          <button
+            className="search-btn"
+            onClick={handleSearch}
+            aria-label="Buscar"
+            type="button"
+          >
+            🔍
+          </button>
+        </div>
       </div>
 
       <div className="header-right">
+        <nav
+          className="dropdown"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ position: 'relative' }}
+          aria-haspopup="true"
+          aria-expanded={showDropdown}
+        >
+          <span
+            className="text-link"
+            tabIndex={0}
+            role="button"
+            onFocus={handleMouseEnter}
+            onBlur={handleMouseLeave}
+          >
+            Categorías
+          </span>
+          <ul className={`dropdown-menu ${showDropdown ? 'show' : ''}`}>
+            {categories.map((category, index) => {
+              // Asegurar que category es un string
+              const categoryString = typeof category === 'string' ? category : String(category);
+              
+              return (
+                <li key={`category-${index}-${categoryString}`}>
+                  <Link to={`/?category=${encodeURIComponent(categoryString)}`}>
+                    {categoryString}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <Link to="/offers" className="text-link">
+          Ofertas
+        </Link>
+        <Link to="/supermarket" className="text-link">
+          Supermercado
+        </Link>
+
         {user ? (
           <>
-            <span className="user-name">👋 Hola, {user.email}</span>
-            <button className="logout-btn" onClick={handleLogout}>Cerrar sesión</button>
-            <Link to="/profile" className="icon-link">⚙️ Perfil</Link>
+            <span className="user-name" aria-label={`Usuario: ${user.email}`}>
+              Hola, {user.email.split('@')[0]}
+            </span>
+            <button className="logout-btn" onClick={handleLogout} type="button">
+              Cerrar sesión
+            </button>
+            <Link to="/cart" className="icon-link" aria-label="Carrito de compras">
+              🛒
+            </Link>
           </>
         ) : (
           <>
-            <Link to="/login" className="icon-link">👤 Entrar</Link>
-            <Link to="/register" className="icon-link">📝 Registrarse</Link>
+            <Link to="/login" className="text-link">
+              Entrar
+            </Link>
+            <Link to="/register" className="text-link">
+              Crear cuenta
+            </Link>
+            <Link to="/cart" className="icon-link" aria-label="Carrito de compras">
+              🛒
+            </Link>
           </>
         )}
       </div>
