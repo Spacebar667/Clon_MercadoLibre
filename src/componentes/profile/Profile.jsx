@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 function Profile() {
   const { user } = useContext(UserContext);
-  const [fullName, setFullName] = useState('');
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,20 +18,20 @@ function Profile() {
       return;
     }
 
-    // Cargar datos del perfil si existen
     const loadProfile = async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('full_name')
+        .select('full_name, username, phone, communication_preference')
         .eq('id', user.id)
         .single();
 
       if (error && error.code !== 'PGRST116') {
         console.error('Error al cargar perfil:', error.message);
+        setMessage('Error al cargar perfil');
       }
 
-      if (data?.full_name) {
-        setFullName(data.full_name);
+      if (data) {
+        setProfile(data);
       }
 
       setLoading(false);
@@ -39,48 +40,64 @@ function Profile() {
     loadProfile();
   }, [user, navigate]);
 
-  const handleSave = async () => {
-    if (!user) return;
-
-    const { error } = await supabase
-      .from('profiles')
-      .upsert({
-        id: user.id,
-        full_name: fullName,
-      });
-
-    if (error) {
-      console.error('Error al guardar perfil:', error.message);
-      setMessage('Error al guardar.');
-    } else {
-      setMessage('Perfil actualizado exitosamente.');
-    }
-  };
-
   if (!user || loading) return <p>Cargando perfil...</p>;
 
+  const openTab = (path) => {
+    window.open(path, '_blank', 'noopener,noreferrer');
+  };
+
   return (
-    <div style={{ maxWidth: 600, margin: '2rem auto', padding: '1rem' }}>
+    <div style={{ maxWidth: '1200px', margin: '2rem auto', padding: '1rem' }}>
       <h2>Mi Perfil</h2>
-      <p><strong>Correo:</strong> {user.email}</p>
-
-      <label>
-        Nombre completo:
-        <input
-          type="text"
-          value={fullName}
-          onChange={e => setFullName(e.target.value)}
-          style={{ width: '100%', padding: '8px', marginTop: '4px' }}
-        />
-      </label>
-
-      <button onClick={handleSave} style={{ marginTop: '1rem' }}>
-        Guardar cambios
-      </button>
-
-      {message && <p style={{ marginTop: '1rem', color: 'green' }}>{message}</p>}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1rem',
+          gridAutoRows: 'minmax(120px, auto)',
+          cursor: 'pointer',
+        }}
+      >
+        <div onClick={() => openTab('/profile/Card/InfoCard')} style={cardStyle}>
+          <h3>Tu información</h3>
+          <p>Ver y editar tu nombre completo.</p>
+        </div>
+        <div onClick={() => openTab('/profile/cuenta')} style={cardStyle}>
+          <h3>Datos de tu cuenta</h3>
+          <p>Usuario y teléfono.</p>
+        </div>
+        <div onClick={() => openTab('/profile/seguridad')} style={cardStyle}>
+          <h3>Seguridad</h3>
+          <p>Cambiar tu contraseña.</p>
+        </div>
+        <div onClick={() => openTab('/profile/tarjetas')} style={cardStyle}>
+          <h3>Tarjetas</h3>
+          <p>Gestionar tarjetas guardadas.</p>
+        </div>
+        <div onClick={() => openTab('/profile/direcciones')} style={cardStyle}>
+          <h3>Direcciones</h3>
+          <p>Gestionar direcciones guardadas.</p>
+        </div>
+        <div onClick={() => openTab('/profile/privacidad')} style={cardStyle}>
+          <h3>Privacidad</h3>
+          <p>Configurar opciones de privacidad.</p>
+        </div>
+        <div onClick={() => openTab('/profile/comunicaciones')} style={cardStyle}>
+          <h3>Comunicaciones</h3>
+          <p>Preferencias de comunicación.</p>
+        </div>
+      </div>
+      {message && <p style={{ color: 'red', marginTop: '1rem' }}>{message}</p>}
     </div>
   );
 }
+
+const cardStyle = {
+  background: '#f5f5f5',
+  padding: '1rem',
+  borderRadius: '8px',
+  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+  userSelect: 'none',
+};
 
 export default Profile;

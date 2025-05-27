@@ -7,7 +7,16 @@ import Cart from './componentes/cart/Cart';
 import Login from './componentes/login/Login';
 import Register from './componentes/register/Register';
 import Profile from './componentes/profile/Profile';
-import { CartProvider } from './context/CartContext'; // Contexto del carrito
+
+// Importa componentes para las pestañas del perfil
+import InfoCard from './componentes/profile/Card/InfoCard';
+import AccountCard from './componentes/profile/Card/AccountCard';
+
+import CardsCard from './componentes/profile/Card/CardsCard';
+import AddressesCard from './componentes/profile/Card/AddressesCard';
+import CommunicationCard from './componentes/profile/Card/CommunicationCard';
+
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (
@@ -19,7 +28,16 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="profile" element={<Profile />} />
+          {/* Rutas de perfil con subrutas */}
+          <Route path="profile" element={<Profile />}>
+            <Route index element={<InfoCard />} />
+            <Route path="info" element={<InfoCard />} />
+            <Route path="cuenta" element={<AccountCard />} />
+            
+            <Route path="tarjetas" element={<CardsCard />} />
+            <Route path="direcciones" element={<AddressesCard />} />
+            <Route path="comunicaciones" element={<CommunicationCard />} />
+          </Route>
         </Route>
       </Routes>
     </CartProvider>

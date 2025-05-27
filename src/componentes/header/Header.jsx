@@ -8,7 +8,9 @@ function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categories, setCategories] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const hoverTimeout = useRef(null);
+  const userMenuTimeout = useRef(null);
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -23,7 +25,6 @@ function Header() {
     ];
     
     setCategories(hardcodedCategories);
-    
   }, []);
 
   const handleSearch = () => {
@@ -43,7 +44,7 @@ function Header() {
     try {
       await supabase.auth.signOut();
       setUser(null);
-      navigate('/');
+      navigate('/login');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
@@ -62,6 +63,31 @@ function Header() {
     }
     // Añadir un pequeño delay antes de ocultar para permitir transición suave
     hoverTimeout.current = setTimeout(() => setShowDropdown(false), 200);
+  };
+
+  const handleUserMenuEnter = () => {
+    if (userMenuTimeout.current) {
+      clearTimeout(userMenuTimeout.current);
+    }
+    setShowUserMenu(true);
+  };
+
+  const handleUserMenuLeave = () => {
+    if (userMenuTimeout.current) {
+      clearTimeout(userMenuTimeout.current);
+    }
+    userMenuTimeout.current = setTimeout(() => setShowUserMenu(false), 200);
+  };
+
+  const fullName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Usuario";
+
+  const itemStyle = {
+    padding: '0.4rem 1rem',
+    cursor: 'pointer',
+    fontSize: '0.95rem',
+    transition: 'background 0.2s',
+    whiteSpace: 'nowrap',
+    color: '#333',
   };
 
   return (
@@ -141,12 +167,51 @@ function Header() {
 
         {user ? (
           <>
-            <span className="user-name" aria-label={`Usuario: ${user.email}`}>
-              Hola, {user.email.split('@')[0]}
-            </span>
-            <button className="logout-btn" onClick={handleLogout} type="button">
-              Cerrar sesión
-            </button>
+            <div
+              onMouseEnter={handleUserMenuEnter}
+              onMouseLeave={handleUserMenuLeave}
+              style={{ position: 'relative', cursor: 'pointer' }}
+            >
+              <span className="user-name" aria-label={`Usuario: ${fullName}`}>
+                Hola, {fullName}
+              </span>
+              {showUserMenu && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    background: '#fff',
+                    border: '1px solid #ccc',
+                    borderRadius: '8px',
+                    padding: '0.5rem',
+                    width: '200px',
+                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                    zIndex: 10
+                  }}
+                >
+                  <div style={{ padding: '0.5rem 1rem', borderBottom: '1px solid #eee' }}>
+                    <strong>{fullName}</strong><br />
+                    <span
+                      onClick={() => navigate('/profile')}
+                      style={{ color: '#007bff', cursor: 'pointer', fontSize: '0.9rem' }}
+                    >
+                      Mi perfil
+                    </span>
+                  </div>
+                  <ul style={{ listStyle: 'none', padding: '0.5rem 0', margin: 0 }}>
+                    <li onClick={() => navigate('/compras')} style={itemStyle}>Compras</li>
+                    <li onClick={() => navigate('/historial')} style={itemStyle}>Historial</li>
+                    <li onClick={() => navigate('/preguntas')} style={itemStyle}>Preguntas</li>
+                    <li onClick={() => navigate('/opiniones')} style={itemStyle}>Opiniones</li>
+                    <li onClick={() => navigate('/suscripciones')} style={itemStyle}>Suscripciones</li>
+                    <li onClick={() => navigate('/mercado-play')} style={itemStyle}>Mercado Play</li>
+                    <li onClick={() => navigate('/vender')} style={itemStyle}>Vender</li>
+                    <li onClick={handleLogout} style={{ ...itemStyle, color: 'red' }}>Salir</li>
+                  </ul>
+                </div>
+              )}
+            </div>
             <Link to="/cart" className="icon-link" aria-label="Carrito de compras">
               🛒
             </Link>
