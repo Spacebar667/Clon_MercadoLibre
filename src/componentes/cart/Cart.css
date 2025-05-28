@@ -1,10 +1,19 @@
-/* src/pages/Cart.css */
-
 .cart-container {
   max-width: 800px;
   margin: 30px auto;
   padding: 0 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.cart-empty {
+  max-width: 600px;
+  margin: 50px auto;
+  text-align: center;
+  color: #777;
+  font-size: 1.2rem;
 }
 
 .cart-item {
@@ -12,15 +21,19 @@
   align-items: center;
   border-bottom: 1px solid #ddd;
   padding: 15px 0;
+  background: #fff;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .cart-item img {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   object-fit: contain;
   margin-right: 20px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   background-color: #fff;
 }
 
@@ -30,18 +43,19 @@
 
 .cart-item-details h3 {
   margin: 0 0 8px 0;
-  font-size: 1.1rem;
-  color: #333;
+  font-size: 1.2rem;
+  color: #222;
 }
 
 .cart-item-details p {
-  margin: 4px 0;
+  margin: 6px 0;
   color: #555;
+  font-weight: 500;
 }
 
 .cart-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 8px;
 }
 
@@ -49,11 +63,14 @@
   background-color: #2874f0;
   color: white;
   border: none;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 4px;
+  padding: 8px 14px;
+  font-size: 1.1rem;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-buttons button:hover {
@@ -62,8 +79,8 @@
 
 .cart-total {
   text-align: right;
-  margin-top: 25px;
-  font-size: 1.3rem;
+  margin-top: 30px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #222;
 }
@@ -72,12 +89,12 @@
   background-color: #e53935;
   color: white;
   border: none;
-  padding: 10px 18px;
-  font-size: 1rem;
-  border-radius: 5px;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-top: 15px;
+  margin-top: 20px;
   float: right;
 }
 

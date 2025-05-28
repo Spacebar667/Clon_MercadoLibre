@@ -1,0 +1,28 @@
+.supermarket-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #34495e;
+}
+
+.supermarket-container h1 {
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+  color: #27ae60;
+}
+
+.supermarket-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  justify-content: center;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 40px;
+  color: #7f8c8d;
+}

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -7,6 +9,7 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
     setErrorMsg("");
@@ -36,33 +39,45 @@ function Register() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      // Opcional: después de registro exitoso, puedes redirigir al login
+      // navigate("/login");
     }
   };
 
   return (
-    <div>
+    <div className="register-container" role="main" aria-label="Formulario de registro">
       <h2>Registrarse</h2>
+      
       <input
         type="email"
+        className="register-input"
         placeholder="Correo electrónico"
         value={email}
         onChange={e => setEmail(e.target.value)}
+        aria-label="Correo electrónico"
       />
       <input
         type="password"
+        className="register-input"
         placeholder="Contraseña"
         value={password}
         onChange={e => setPassword(e.target.value)}
+        aria-label="Contraseña"
       />
       <input
         type="password"
+        className="register-input"
         placeholder="Confirmar contraseña"
         value={confirmPassword}
         onChange={e => setConfirmPassword(e.target.value)}
+        aria-label="Confirmar contraseña"
       />
-      <button onClick={handleRegister}>Registrar</button>
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
-      {successMsg && <p style={{ color: "green" }}>{successMsg}</p>}
+      <button onClick={handleRegister} className="register-button" aria-label="Registrar cuenta">
+        Registrar
+      </button>
+
+      {errorMsg && <p className="register-error">{errorMsg}</p>}
+      {successMsg && <p className="register-success">{successMsg}</p>}
     </div>
   );
 }

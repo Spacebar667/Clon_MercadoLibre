@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "../carousel/Carousel";
 import ProductCard from "../product_card/ProductCard";
+
+import { CartContext } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+
 import "./Home.css";
 
 function Home() {
@@ -16,25 +20,27 @@ function Home() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { addToCart } = useContext(CartContext);
+  const { isLoggedIn } = useAuth();
+
+  const [showAdded, setShowAdded] = useState(false);
+
   const queryParams = new URLSearchParams(location.search);
   const searchQuery = queryParams.get("search") || "";
   const selectedFromURL = queryParams.get("category");
 
-  // Cargar categorías
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) setCategories(data);
-        else {
-          console.error("Categorías no válidas:", data);
+        if (Array.isArray(data)) {
+          const cats = data.filter(item => typeof item === "string");
+          setCategories(cats);
+        } else {
           setCategories([]);
         }
       })
-      .catch(error => {
-        console.error("Error al cargar categorías:", error);
-        setCategories([]);
-      });
+      .catch(() => setCategories([]));
   }, []);
 
   useEffect(() => {
@@ -54,14 +60,12 @@ function Home() {
         setProducts(productsArray);
         setLoading(false);
       })
-      .catch(error => {
-        console.error("Error al cargar productos:", error);
+      .catch(() => {
         setProducts([]);
         setLoading(false);
       });
   }, [selectedCategory]);
 
-  // Filtrar productos solo por búsqueda de texto
   useEffect(() => {
     let temp = [...products];
     if (searchQuery.trim() !== "") {
@@ -71,12 +75,22 @@ function Home() {
     setFilteredProducts(temp);
   }, [products, searchQuery]);
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryClick = (category) => {
     if (category === selectedCategory) {
       navigate("/");
     } else {
       navigate(`/?category=${encodeURIComponent(category)}&search=${encodeURIComponent(searchQuery)}`);
     }
+  };
+
+  const handleAddToCart = (product) => {
+    if (!isLoggedIn) {
+      navigate("/login", { state: { message: "Debes tener cuenta para agregar al carrito" } });
+      return;
+    }
+    addToCart(product);
+    setShowAdded(true);
+    setTimeout(() => setShowAdded(false), 2000);
   };
 
   return (
@@ -88,31 +102,50 @@ function Home() {
       </div>
 
       <div className="home-container">
-        <div className="inner-container">
+        <nav className="category-list" aria-label="Lista de categorías">
+          <ul>
+            {categories.map(cat => (
+              <li
+                key={cat}
+                className={`category-item ${selectedCategory === cat ? "active" : ""}`}
+                onClick={() => handleCategoryClick(cat)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => (e.key === "Enter" || e.key === " ") && handleCategoryClick(cat)}
+              >
+                <span>{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+                <span className="arrow">{selectedCategory === cat ? "▼" : "→"}</span>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {showAdded && (
+          <div className="added-notification">
+            Producto añadido al carrito ✔️
+          </div>
+        )}
+
+        <section className="products-display" aria-live="polite">
           {loading ? (
             <p>Cargando productos...</p>
           ) : filteredProducts.length > 0 ? (
             searchQuery.trim() !== "" ? (
-              // Vista de lista para búsquedas
-              <div className="product-list">
-                {filteredProducts.map((product) => (
-                  <div 
-                    key={product.id} 
-                    className="product-item-search"
-                    onClick={() => navigate(`/product/${product.id}`)}
-                  >
-                    <div className="product-image-container">
-                      <img 
-                        src={product.thumbnail || product.images?.[0]} 
-                        alt={product.title}
-                        className="product-image-search"
-                      />
-                    </div>
+              // Vista lista para búsqueda
+              <ul className="product-list" role="list">
+                {filteredProducts.map(product => (
+                  <li key={product.id} className="product-item-search">
+                    <img 
+                      src={product.thumbnail || product.images?.[0]} 
+                      alt={product.title}
+                      className="product-image-search"
+                      loading="lazy"
+                    />
                     <div className="product-info-search">
-                      <h3 className="product-title-search">{product.title}</h3>
-                      <p className="product-description-search">{product.description}</p>
+                      <h3>{product.title}</h3>
+                      <p>{product.description}</p>
                       <div className="product-price-container">
-                        <span className="product-price-search">$ {product.price.toLocaleString()}</span>
+                        <span className="product-price-search">${product.price.toLocaleString()}</span>
                         {product.discountPercentage > 0 && (
                           <span className="product-discount">
                             {Math.round(product.discountPercentage)}% OFF
@@ -120,30 +153,43 @@ function Home() {
                         )}
                       </div>
                       {product.rating && (
-                        <div className="product-rating-search">
-                          <span className="rating-stars">
+                        <div className="product-rating-search" aria-label={`Valoración: ${product.rating} de 5`}>
+                          <span className="rating-stars" aria-hidden="true">
                             {"★".repeat(Math.floor(product.rating))}
                             {"☆".repeat(5 - Math.floor(product.rating))}
                           </span>
-                          <span className="rating-number">({product.rating})</span>
+                          <span className="rating-number">({product.rating.toFixed(1)})</span>
                         </div>
                       )}
+                      <button onClick={() => navigate(`/product/${product.id}`)} className="btn-view-product">
+                        Ver detalle
+                      </button>
+                      <button 
+                        onClick={() => handleAddToCart(product)} 
+                        className="btn-add-to-cart-search"
+                      >
+                        Agregar al carrito
+                      </button>
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             ) : (
-              // Vista de grilla para navegación normal
+              // Vista grilla normal
               <div className="product-grid">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {filteredProducts.map(product => (
+                  <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    onAddToCart={() => handleAddToCart(product)} 
+                  />
                 ))}
               </div>
             )
           ) : (
             <p>No se encontraron productos que coincidan.</p>
           )}
-        </div>
+        </section>
       </div>
     </div>
   );

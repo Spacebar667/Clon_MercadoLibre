@@ -17,19 +17,18 @@ export const CartProvider = ({ children }) => {
 
   // Función para agregar producto al carrito
   const addToCart = (product) => {
-    setCart(prevCart => {
-      // Verificar si el producto ya está
-      const existingProduct = prevCart.find(p => p.id === product.id);
-      if (existingProduct) {
-        // Aumentar cantidad si existe
-        return prevCart.map(p =>
-          p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
-        );
-      }
-      // Si no existe, agregar con cantidad 1
-      return [...prevCart, { ...product, quantity: 1 }];
-    });
-  };
+  setCart(prevCart => {
+    const existingProduct = prevCart.find(p => p.id === product.id);
+    if (existingProduct) {
+      return prevCart.map(p =>
+        p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
+      );
+    }
+    // Aquí le aseguramos que siempre haya "image"
+    return [...prevCart, { ...product, quantity: 1, image: product.thumbnail || product.image }];
+  });
+};
+
 
   // Función para remover producto o disminuir cantidad
   const removeFromCart = (productId) => {

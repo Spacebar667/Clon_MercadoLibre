@@ -1,21 +1,100 @@
-/* src/components/ProductCard.css */
 .product-card {
-    width: 200px;
-    text-decoration: none;
-    color: black;
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .product-card:hover {
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  
-  .product-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: contain;
-  }
-  
+  width: 220px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+  user-select: none;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.product-link {
+  color: #333;
+  text-decoration: none;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .image-wrapper img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 12px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.product-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1a73e8;
+}
+
+.product-discount {
+  background-color: #ff4d4f;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 14px;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* Botón agregar al carrito */
+.btn-add-cart {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 0 0 12px 12px;
+  padding: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  outline-offset: 2px;
+}
+
+.btn-add-cart:hover {
+  background-color: #155ab6;
+}
+
+.btn-add-cart:active {
+  background-color: #0f407f;
+}

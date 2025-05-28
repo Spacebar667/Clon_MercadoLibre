@@ -1,0 +1,76 @@
+.login-container {
+  max-width: 380px;
+  margin: 50px auto;
+  padding: 40px 30px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.login-container h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border: 1.8px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.login-input:focus {
+  border-color: #3483fa; /* color azul ML */
+  outline: none;
+  box-shadow: 0 0 8px rgba(52, 131, 250, 0.3);
+}
+
+.login-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #3483fa; /* azul ML */
+  color: white;
+  font-weight: 700;
+  font-size: 17px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  background-color: #2968c8; /* azul más oscuro */
+}
+
+.login-error {
+  color: #ff3b3b;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+}
+
+.login-redirect-msg {
+  color: #ff3b3b;
+  margin-bottom: 14px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+}
+
+.register-button {
+  background-color: #00a650; /* verde ML */
+  transition: background-color 0.25s ease;
+}
+
+.register-button:hover {
+  background-color: #00813e;
+}
