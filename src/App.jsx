@@ -7,20 +7,17 @@ import Cart from './componentes/cart/Cart';
 import Login from './componentes/login/Login';
 import Register from './componentes/register/Register';
 import Profile from './componentes/profile/Profile';
-
-// Importa componentes para las pestañas del perfil
-import InfoCard from './componentes/profile/Card/InfoCard';
-import AccountCard from './componentes/profile/Card/AccountCard';
-import CardsCard from './componentes/profile/Card/CardsCard';
-import AddressesCard from './componentes/profile/Card/AddressesCard';
-import CommunicationCard from './componentes/profile/Card/CommunicationCard';
-
-// Importa componentes nuevos
-import Offers from './componentes/offers/Offers';
-import Supermarket from './componentes/supermarket/Supermarket';
-
+import ProfileGrid from './componentes/profile/ProfileGrid';
 import { CartProvider } from './context/CartContext';
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from './context/AuthContext';
+import Administrador from './componentes/admin/Administrador';
+
+// Importar componentes de perfiles
+import UserInfo from './componentes/profiles_comps/UserInfo';
+import AccountData from './componentes/profiles_comps/AccountData';
+import CardsComponent from './componentes/profiles_comps/CardsComponent';
+import AddressesComponent from './componentes/profiles_comps/AddressesComponent';
+import CommunicationsComponent from './componentes/profiles_comps/CommunicationsComponent';
 
 function App() {
   return (
@@ -33,19 +30,15 @@ function App() {
             <Route path="cart" element={<Cart />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-
-            {/* Rutas nuevas */}
-            <Route path="offers" element={<Offers />} />
-            <Route path="supermarket" element={<Supermarket />} />
-
-            {/* Rutas de perfil con subrutas */}
             <Route path="profile" element={<Profile />}>
-              <Route index element={<InfoCard />} />
-              <Route path="info" element={<InfoCard />} />
-              <Route path="cuenta" element={<AccountCard />} />
-              <Route path="tarjetas" element={<CardsCard />} />
-              <Route path="direcciones" element={<AddressesCard />} />
-              <Route path="comunicaciones" element={<CommunicationCard />} />
+              <Route index element={<ProfileGrid />} />
+              <Route path="user-info" element={<UserInfo />} />
+              <Route path="account-data" element={<AccountData />} />
+              <Route path="cards" element={<CardsComponent />} />
+              <Route path="addresses" element={<AddressesComponent />} />
+              <Route path="communications" element={<CommunicationsComponent />} />
+              <Route path="admin" element={<Administrador />} />
+
             </Route>
           </Route>
         </Routes>

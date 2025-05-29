@@ -1,83 +1,55 @@
-import { useState } from "react";
-import { supabase } from "../../supabaseClient";
-import { useNavigate } from "react-router-dom";
-import "./Register.css";
+import { useState } from 'react';
+import { supabase } from '../../supabaseClient';
 
 function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
-  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+    phone: '',
+    communication_preference: '',
+  });
+
+  const [message, setMessage] = useState('');
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleRegister = async () => {
-    setErrorMsg("");
-    setSuccessMsg("");
-
-    if (!email || !password || !confirmPassword) {
-      setErrorMsg("Todos los campos son obligatorios.");
-      return;
-    }
-
-    if (password.length < 6) {
-      setErrorMsg("La contraseña debe tener al menos 6 caracteres.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMsg("Las contraseñas no coinciden.");
-      return;
-    }
-
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase
+      .from('users')
+      .insert([form]);
 
     if (error) {
-      setErrorMsg(error.message);
+      setMessage(`Error: ${error.message}`);
     } else {
-      setSuccessMsg("¡Registro exitoso! Revisa tu correo para confirmar.");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      // Opcional: después de registro exitoso, puedes redirigir al login
-      // navigate("/login");
+      setMessage('Usuario registrado exitosamente');
+      setForm({
+        username: '',
+        email: '',
+        password: '',
+        phone: '',
+        communication_preference: '',
+      });
     }
   };
 
   return (
-    <div className="register-container" role="main" aria-label="Formulario de registro">
-      <h2>Registrarse</h2>
-      
-      <input
-        type="email"
-        className="register-input"
-        placeholder="Correo electrónico"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        aria-label="Correo electrónico"
-      />
-      <input
-        type="password"
-        className="register-input"
-        placeholder="Contraseña"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        aria-label="Contraseña"
-      />
-      <input
-        type="password"
-        className="register-input"
-        placeholder="Confirmar contraseña"
-        value={confirmPassword}
-        onChange={e => setConfirmPassword(e.target.value)}
-        aria-label="Confirmar contraseña"
-      />
-      <button onClick={handleRegister} className="register-button" aria-label="Registrar cuenta">
-        Registrar
-      </button>
-
-      {errorMsg && <p className="register-error">{errorMsg}</p>}
-      {successMsg && <p className="register-success">{successMsg}</p>}
+    <div>
+      <h2>Registro</h2>
+      <input name="username" placeholder="Usuario" onChange={handleChange} value={form.username} />
+      <input name="email" placeholder="Correo" onChange={handleChange} value={form.email} />
+      <input name="password" type="password" placeholder="Contraseña" onChange={handleChange} value={form.password} />
+      <input name="phone" placeholder="Teléfono" onChange={handleChange} value={form.phone} />
+      <select name="communication_preference" onChange={handleChange} value={form.communication_preference}>
+        <option value="">Selecciona preferencia</option>
+        <option value="email">Correo electrónico</option>
+        <option value="sms">SMS</option>
+        <option value="notificaciones">Notificaciones móviles</option>
+      </select>
+      <button onClick={handleRegister}>Registrar</button>
+      {message && <p>{message}</p>}
     </div>
   );
 }
