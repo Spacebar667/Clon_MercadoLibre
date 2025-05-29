@@ -200,7 +200,6 @@ function Header() {
                     </span>
                   </div>
                   <ul style={{ listStyle: 'none', padding: '0.5rem 0', margin: 0 }}>
-                    <li onClick={() => navigate('/compras')} style={itemStyle}>Compras</li>
                     <li onClick={() => navigate('/historial')} style={itemStyle}>Historial</li>
                     <li onClick={() => navigate('/preguntas')} style={itemStyle}>Preguntas</li>
                     <li onClick={() => navigate('/opiniones')} style={itemStyle}>Opiniones</li>

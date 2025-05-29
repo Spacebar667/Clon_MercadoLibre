@@ -1,0 +1,64 @@
+.opiniones-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.opinion-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+}
+
+.opinion-stars {
+  font-size: 20px;
+  color: #ffc107;
+  margin-right: 5px;
+}
+
+.opinion-stars.faded {
+  color: #e4e5e9;
+}
+
+.opinion-form {
+  border-top: 1px solid #eee;
+  margin-top: 30px;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opinion-textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.opinion-button {
+  padding: 10px 16px;
+  background-color: #3483fa;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.opinion-button:hover {
+  background-color: #2968c8;
+}
+
+.opinion-rating-star {
+  cursor: pointer;
+  font-size: 25px;
+}

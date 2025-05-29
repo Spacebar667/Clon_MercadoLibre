@@ -1,76 +1,135 @@
-.login-container {
-  max-width: 380px;
-  margin: 50px auto;
-  padding: 40px 30px;
-  background: white;
+/* Login.css */
+
+.auth-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background: #fff;
   border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-  font-family: Arial, sans-serif;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
-.login-container h2 {
-  font-size: 28px;
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #003087; /* Mercado Libre blue */
   font-weight: 700;
-  margin-bottom: 24px;
-  color: #333;
+  font-size: 28px;
+}
+
+.message {
+  margin-bottom: 20px;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
   text-align: center;
 }
 
-.login-input {
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 16px;
-  border: 1.8px solid #ccc;
-  border-radius: 4px;
+.message.error {
+  background-color: #fcebea;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+
+.message.success {
+  background-color: #e9f7ef;
+  color: #27ae60;
+  border: 1px solid #27ae60;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #003087;
   font-size: 15px;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1.8px solid #d0d7de;
+  border-radius: 6px;
   transition: border-color 0.3s ease;
 }
 
-.login-input:focus {
-  border-color: #3483fa; /* color azul ML */
+.form-group input:focus {
   outline: none;
-  box-shadow: 0 0 8px rgba(52, 131, 250, 0.3);
+  border-color: #003087;
+  box-shadow: 0 0 6px rgba(0,48,135,0.4);
 }
 
-.login-button {
-  width: 100%;
-  padding: 14px;
-  background-color: #3483fa; /* azul ML */
-  color: white;
-  font-weight: 700;
-  font-size: 17px;
+.primary-button {
+  background-color: #0057b7; /* azul vibrante */
   border: none;
   border-radius: 6px;
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.25s ease;
+  transition: background-color 0.3s ease;
   margin-top: 10px;
 }
 
-.login-button:hover {
-  background-color: #2968c8; /* azul más oscuro */
+.primary-button:disabled {
+  background-color: #a3c1f7;
+  color: #e0e7ff;
+  cursor: not-allowed;
 }
 
-.login-error {
-  color: #ff3b3b;
+.primary-button:hover:not(:disabled) {
+  background-color: #003d8f;
+}
+
+
+.auth-links {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.text-button {
+  background: none;
+  border: none;
+  color: #003087;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.text-button:hover {
+  color: #001f4d;
+}
+
+.auth-footer {
+  font-weight: 500;
   margin-top: 10px;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: center;
 }
 
-.login-redirect-msg {
-  color: #ff3b3b;
-  margin-bottom: 14px;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: center;
+.auth-footer span {
+  color: #003087;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
-.register-button {
-  background-color: #00a650; /* verde ML */
-  transition: background-color 0.25s ease;
-}
-
-.register-button:hover {
-  background-color: #00813e;
+.auth-footer span:hover {
+  color: #001f4d;
 }

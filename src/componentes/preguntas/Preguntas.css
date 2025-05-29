@@ -1,0 +1,76 @@
+.preguntas-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.preguntas-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.preguntas-login-message {
+  color: #555;
+  font-style: italic;
+}
+
+.preguntas-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  color: #444;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.preguntas-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.pregunta-item {
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
+
+.pregunta-label,
+.respuesta-label {
+  font-weight: 600;
+  color: #2e2e2e;
+}
+
+.pregunta-textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pregunta-btn {
+  background-color: #3483fa;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.pregunta-btn:hover {
+  background-color: #2968c8;
+}

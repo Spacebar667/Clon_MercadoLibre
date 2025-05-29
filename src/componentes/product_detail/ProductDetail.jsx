@@ -1,14 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { CartContext } from "../../context/CartContext";
-import { useAuth } from "../../context/AuthContext";  // IMPORTAR useAuth
+import { useAuth } from "../../context/AuthContext";
 import ProductCard from "../product_card/ProductCard";
 import "./ProductDetail.css";
 
 function ProductDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();                   // OBTENER navigate
-  const { isLoggedIn } = useAuth();                  // OBTENER estado de login
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
 
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([
@@ -20,7 +20,6 @@ function ProductDetail() {
   const [mainImage, setMainImage] = useState(null);
   const { addToCart } = useContext(CartContext);
   const [showAdded, setShowAdded] = useState(false);
-
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
@@ -77,6 +76,19 @@ function ProductDetail() {
     setTimeout(() => setShowAdded(false), 2000);
   };
 
+  const handleBuyNow = () => {
+    if (!isLoggedIn) {
+      navigate('/login', {
+        state: { message: 'Debes iniciar sesión para comprar.' },
+      });
+      return;
+    }
+
+    navigate('/compras', {
+      state: { productoSeleccionado: product },
+    });
+  };
+
   return (
     <div className="product-detail-container">
       <div className="product-main">
@@ -102,7 +114,7 @@ function ProductDetail() {
         <div className="product-details">
           <h1>{product.title}</h1>
           <p className="product-price">${product.price}</p>
-          <button className="buy-button">Comprar ahora</button>
+          <button className="buy-button" onClick={handleBuyNow}>Comprar ahora</button>
           <button className="add-cart-button" onClick={handleAddToCart}>
             Agregar al carrito
           </button>

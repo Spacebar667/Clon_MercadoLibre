@@ -1,0 +1,15 @@
+.historial-container {
+  padding: 2rem;
+}
+
+.lista-historial {
+  list-style: none;
+  padding: 0;
+}
+
+.item-compra {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
