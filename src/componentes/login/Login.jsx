@@ -4,28 +4,49 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [form, setForm] = useState({
+    email: "",
+    password: ""
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
   const navigate = useNavigate();
   const location = useLocation();
 
   const redirectMessage = location.state?.message || "";
 
-  const handleLogin = async () => {
-    setErrorMsg("");
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    if (!email || !password) {
-      setErrorMsg("Debes ingresar correo y contraseña.");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage({ text: "", type: "" });
+
+    if (!form.email || !form.password) {
+      setMessage({ text: "Email y contraseña son obligatorios", type: "error" });
+      setLoading(false);
       return;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: form.email,
+        password: form.password
+      });
 
-    if (error) {
-      setErrorMsg("Correo o contraseña incorrectos.");
-    } else {
-      navigate("/");
+      if (error) throw error;
+
+      navigate("/"); // Redirige a la página principal después del login
+    } catch (error) {
+      console.error("Login error:", error);
+      setMessage({
+        text: error.message || "Credenciales incorrectas o error en el servidor",
+        type: "error"
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,41 +54,90 @@ function Login() {
     navigate("/register");
   };
 
+  const handlePasswordReset = async () => {
+    if (!form.email) {
+      setMessage({ text: "Ingresa tu email para restablecer la contraseña", type: "error" });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(form.email);
+      if (error) throw error;
+      setMessage({
+        text: "¡Email de recuperación enviado! Revisa tu bandeja de entrada.",
+        type: "success"
+      });
+    } catch (error) {
+      setMessage({
+        text: error.message || "Error al enviar el email de recuperación",
+        type: "error"
+      });
+    }
+  };
+
   return (
-    <div className="login-container" role="main" aria-label="Formulario de inicio de sesión">
+    <div className="auth-container">
       <h2>Iniciar sesión</h2>
-      {redirectMessage && <p className="login-redirect-msg">{redirectMessage}</p>}
+      
+      {redirectMessage && (
+        <div className="message success">
+          {redirectMessage}
+        </div>
+      )}
 
-      <input
-        type="email"
-        className="login-input"
-        placeholder="Correo electrónico"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        aria-label="Correo electrónico"
-      />
-      <input
-        type="password"
-        className="login-input"
-        placeholder="Contraseña"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        aria-label="Contraseña"
-      />
-      <button onClick={handleLogin} className="login-button" aria-label="Iniciar sesión">
-        Entrar
-      </button>
+      {message.text && (
+        <div className={`message ${message.type}`}>
+          {message.text}
+        </div>
+      )}
 
-      <button 
-        onClick={handleRegisterRedirect} 
-        className="login-button register-button" 
-        aria-label="Crear cuenta"
-        style={{ marginTop: "12px", backgroundColor: "#00a650" }}
-      >
-        Crear cuenta
-      </button>
+      <form onSubmit={handleLogin}>
+        <div className="form-group">
+          <label>Correo electrónico</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="tu@email.com"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-      {errorMsg && <p className="login-error">{errorMsg}</p>}
+        <div className="form-group">
+          <label>Contraseña</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Tu contraseña"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          className="primary-button" 
+          disabled={loading}
+        >
+          {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+        </button>
+      </form>
+
+      <div className="auth-links">
+        <button 
+          onClick={handlePasswordReset} 
+          className="text-button"
+        >
+          ¿Olvidaste tu contraseña?
+        </button>
+
+        <div className="auth-footer">
+          ¿No tienes cuenta?{" "}
+          <span onClick={handleRegisterRedirect}>Regístrate aquí</span>
+        </div>
+      </div>
     </div>
   );
 }
