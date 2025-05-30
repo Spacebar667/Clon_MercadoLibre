@@ -29,9 +29,9 @@ export function AuthProvider({ children }) {
       
       // Opcional: manejar eventos específicos
       if (event === 'SIGNED_IN') {
-        console.log('Usuario inició sesión');
+
       } else if (event === 'SIGNED_OUT') {
-        console.log('Usuario cerró sesión');
+
       }
     });
 

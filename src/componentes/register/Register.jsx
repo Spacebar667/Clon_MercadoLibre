@@ -58,15 +58,21 @@ function Register() {
 
       if (authError) throw authError;
 
+      if (!authData.user || authData.user.identities?.length === 0) {
+  throw new Error('Este correo ya está registrado. Intenta iniciar sesión.');
+}
+
       // 2. Guardar datos adicionales en user_profiles
-      const { error: profileError } = await supabase
-        .from('user_profiles')
-        .insert([{
-          id: authData.user.id,
-          username: form.username,
-          phone: form.phone,
-          communication_preference: form.communication_preference,
-        }]);
+const { error: profileError } = await supabase
+  .from('user_profiles')
+  .insert([{
+    id: authData.user.id,
+    username: form.username,
+    phone: form.phone,
+    communication_preference: form.communication_preference,
+  }]);
+
+
 
       if (profileError) throw profileError;
 

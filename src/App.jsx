@@ -6,21 +6,22 @@ import ProductDetail from './componentes/product_detail/ProductDetail';
 import Cart from './componentes/cart/Cart';
 import Login from './componentes/login/Login';
 import Register from './componentes/register/Register';
-import Profile from './componentes/profile/Profile';
-import ProfileGrid from './componentes/profile/ProfileGrid';
+import Profile from './componentes/profile/Profile'; // cuadrícula de opciones
+import UserInfo from './componentes/profile/UserInfo';
+import AccountData from './componentes/profile/AccountData';
+import CardsComponent from './componentes/profile/CardsComponent';
+import AddressesComponent from './componentes/profile/AddressesComponent';
+import CommunicationsComponent from './componentes/profile/CommunicationsComponent';
+import Security from './componentes/profile/Security';
+
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
-import { PurchaseProvider } from "./context/PurchaseContext";
-import Administrador from './componentes/admin/Administrador';
+import { PurchaseProvider } from './context/PurchaseContext';
+import { UserProvider } from './context/UserContext';
 
-// Componentes del perfil
-import UserInfo from './componentes/profiles_comps/UserInfo';
-import AccountData from './componentes/profiles_comps/AccountData';
-import CardsComponent from './componentes/profiles_comps/CardsComponent';
-import AddressesComponent from './componentes/profiles_comps/AddressesComponent';
-import CommunicationsComponent from './componentes/profiles_comps/CommunicationsComponent';
+import AdminPanel from './componentes/admin/AdminPanel';
+import Prueba from './componentes/prueba/Prueba';
 
-// Rutas externas a profile
 import Supermarket from './componentes/supermarket/Supermarket';
 import Offers from './componentes/offers/Offers';
 import Compras from './componentes/compras/Compras';
@@ -35,39 +36,41 @@ function App() {
   return (
     <AuthProvider>
       <PurchaseProvider>
-        <CartProvider>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="product/:id" element={<ProductDetail />} />
-              <Route path="cart" element={<Cart />} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-              <Route path="supermarket" element={<Supermarket />} />
-              <Route path="offers" element={<Offers />} />
+        <UserProvider>
+          <CartProvider>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="product/:id" element={<ProductDetail />} />
+                <Route path="cart" element={<Cart />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="supermarket" element={<Supermarket />} />
+                <Route path="offers" element={<Offers />} />
+                <Route path="prueba" element={<Prueba />} />
+                <Route path="compras" element={<Compras />} />
+                <Route path="historial" element={<Historial />} />
+                <Route path="preguntas" element={<Preguntas />} />
+                <Route path="opiniones" element={<Opiniones />} />
+                <Route path="suscripciones" element={<Suscripciones />} />
+                <Route path="mercado-play" element={<MercadoPlay />} />
+                <Route path="vender" element={<Vender />} />
 
-              {/* Rutas del perfil */}
-              <Route path="profile" element={<Profile />}>
-                <Route index element={<ProfileGrid />} />
-                <Route path="user-info" element={<UserInfo />} />
-                <Route path="account-data" element={<AccountData />} />
-                <Route path="cards" element={<CardsComponent />} />
-                <Route path="addresses" element={<AddressesComponent />} />
-                <Route path="communications" element={<CommunicationsComponent />} />
-                <Route path="admin" element={<Administrador />} />
+                {/* Rutas del perfil */}
+                <Route path="profile" element={<Profile />} />
+                <Route path="profile/UserInfo" element={<UserInfo />} />
+                <Route path="profile/account-data" element={<AccountData />} />
+                <Route path="profile/cards" element={<CardsComponent />} />
+                <Route path="profile/addresses" element={<AddressesComponent />} />
+                <Route path="profile/communications" element={<CommunicationsComponent />} />
+                <Route path="profile/security" element={<Security />} />
+
+                {/* Panel de administración */}
+                <Route path="admin/AdminPanel" element={<AdminPanel />} />
               </Route>
-
-              {/* Rutas externas al perfil */}
-              <Route path="compras" element={<Compras />} />
-              <Route path="historial" element={<Historial />} />
-              <Route path="preguntas" element={<Preguntas />} />
-              <Route path="opiniones" element={<Opiniones />} />
-              <Route path="suscripciones" element={<Suscripciones />} />
-              <Route path="mercado-play" element={<MercadoPlay />} />
-              <Route path="vender" element={<Vender />} />
-            </Route>
-          </Routes>
-        </CartProvider>
+            </Routes>
+          </CartProvider>
+        </UserProvider>
       </PurchaseProvider>
     </AuthProvider>
   );

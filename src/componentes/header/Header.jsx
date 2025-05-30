@@ -11,11 +11,10 @@ function Header() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const hoverTimeout = useRef(null);
   const userMenuTimeout = useRef(null);
-  const { user, setUser } = useContext(UserContext);
+  const { user, role, loadingUser, logout } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Temporalmente usa categorías hardcodeadas para evitar problemas con la API
     const hardcodedCategories = [
       'beauty', 'fragrances', 'furniture', 'groceries', 'home-decoration',
       'kitchen-accessories', 'laptops', 'mens-shirts', 'mens-shoes', 'mens-watches',
@@ -23,7 +22,6 @@ function Header() {
       'sunglasses', 'tablets', 'tops', 'vehicle', 'womens-bags', 'womens-dresses',
       'womens-jewellery', 'womens-shoes', 'womens-watches'
     ];
-    
     setCategories(hardcodedCategories);
   }, []);
 
@@ -34,16 +32,15 @@ function Header() {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
       handleSearch();
     }
   };
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
-      setUser(null);
+      await logout();
       navigate('/login');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
@@ -51,43 +48,44 @@ function Header() {
   };
 
   const handleMouseEnter = () => {
-    if (hoverTimeout.current) {
-      clearTimeout(hoverTimeout.current);
-    }
+    clearTimeout(hoverTimeout.current);
     setShowDropdown(true);
   };
 
   const handleMouseLeave = () => {
-    if (hoverTimeout.current) {
-      clearTimeout(hoverTimeout.current);
-    }
-    // Añadir un pequeño delay antes de ocultar para permitir transición suave
     hoverTimeout.current = setTimeout(() => setShowDropdown(false), 200);
   };
 
   const handleUserMenuEnter = () => {
-    if (userMenuTimeout.current) {
-      clearTimeout(userMenuTimeout.current);
-    }
+    clearTimeout(userMenuTimeout.current);
     setShowUserMenu(true);
   };
 
   const handleUserMenuLeave = () => {
-    if (userMenuTimeout.current) {
-      clearTimeout(userMenuTimeout.current);
-    }
     userMenuTimeout.current = setTimeout(() => setShowUserMenu(false), 200);
   };
 
   const fullName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Usuario";
 
+  const getUserMenuStyles = () => ({
+    position: 'absolute',
+    top: '100%',
+    right: 0,
+    background: '#ffffff',
+    border: '1px solid #cccccc',
+    borderRadius: '8px',
+    padding: '0.5rem',
+    width: '200px',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+    zIndex: 10
+  });
+
   const itemStyle = {
-    padding: '0.4rem 1rem',
-    cursor: 'pointer',
-    fontSize: '0.95rem',
-    transition: 'background 0.2s',
-    whiteSpace: 'nowrap',
-    color: '#333',
+  padding: '0.5rem 1rem',
+  cursor: 'pointer',
+  ':hover': {
+    backgroundColor: '#f5f5f5'
+  }
   };
 
   return (
@@ -109,7 +107,7 @@ function Header() {
             type="search"
             placeholder="Buscar productos, marcas y más..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(event) => setSearchTerm(event.target.value)}
             onKeyDown={handleKeyDown}
             aria-label="Buscar productos"
           />
@@ -143,18 +141,13 @@ function Header() {
             Categorías
           </span>
           <ul className={`dropdown-menu ${showDropdown ? 'show' : ''}`}>
-            {categories.map((category, index) => {
-              // Asegurar que category es un string
-              const categoryString = typeof category === 'string' ? category : String(category);
-              
-              return (
-                <li key={`category-${index}-${categoryString}`}>
-                  <Link to={`/?category=${encodeURIComponent(categoryString)}`}>
-                    {categoryString}
-                  </Link>
-                </li>
-              );
-            })}
+            {categories.map((category, index) => (
+              <li key={`category-${index}-${category}`}>
+                <Link to={`/?category=${encodeURIComponent(category)}`}>
+                  {category}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
 
@@ -168,33 +161,20 @@ function Header() {
         {user ? (
           <>
             <div
+              className="user-menu-container"
               onMouseEnter={handleUserMenuEnter}
               onMouseLeave={handleUserMenuLeave}
-              style={{ position: 'relative', cursor: 'pointer' }}
             >
-              <span className="user-name" aria-label={`Usuario: ${fullName}`}>
+              <span className="user-name">
                 Hola, {fullName}
               </span>
               {showUserMenu && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: 0,
-                    background: '#fff',
-                    border: '1px solid #ccc',
-                    borderRadius: '8px',
-                    padding: '0.5rem',
-                    width: '200px',
-                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-                    zIndex: 10
-                  }}
-                >
-                  <div style={{ padding: '0.5rem 1rem', borderBottom: '1px solid #eee' }}>
+                <div className="user-menu" style={getUserMenuStyles()}>
+                  <div className="user-menu-header">
                     <strong>{fullName}</strong><br />
                     <span
                       onClick={() => navigate('/profile')}
-                      style={{ color: '#007bff', cursor: 'pointer', fontSize: '0.9rem' }}
+                      className="profile-link"
                     >
                       Mi perfil
                     </span>
@@ -206,6 +186,14 @@ function Header() {
                     <li onClick={() => navigate('/suscripciones')} style={itemStyle}>Suscripciones</li>
                     <li onClick={() => navigate('/mercado-play')} style={itemStyle}>Mercado Play</li>
                     <li onClick={() => navigate('/vender')} style={itemStyle}>Vender</li>
+                     {!loadingUser && role === 'admin' && (
+                        <li
+                          onClick={() => navigate('/admin/AdminPanel')}
+                          className="admin-link"
+                        >
+                          👑 Panel Admin
+                        </li>
+                      )}
                     <li onClick={handleLogout} style={{ ...itemStyle, color: 'red' }}>Salir</li>
                   </ul>
                 </div>

@@ -1,79 +1,92 @@
-// src/componentes/profile/Profile.jsx
-import React, { useState, useEffect } from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../../supabaseClient';
-import './Profile.css';
+// src/components/profile/Profiles.jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { 
+  User, Settings, CreditCard, MapPin, 
+  Shield, Lock, MessageSquare 
+} from 'lucide-react';
+import './Profile.css'; // Archivo CSS para estilos personalizados
 
 const Profile = () => {
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-          navigate('/login');
-          return;
-        }
-
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (error && error.code !== 'PGRST116') throw error;
-
-        if (data) {
-          setProfile({
-            ...data,
-            email: user.email
-          });
-        } else {
-          setProfile({
-            id: user.id,
-            email: user.email
-          });
-        }
-      } catch (error) {
-        console.error('Error al cargar perfil:', error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [navigate]);
-
-  if (loading) return <div>Cargando perfil...</div>;
-  if (!profile) return <div>No se pudo cargar el perfil</div>;
+  const gridOptions = [
+    {
+      id: 'user-info',
+      title: 'Tu Información',
+      icon: User,
+      color: 'bg-blue-500',
+      description: 'Administra tu información personal y datos de contacto'
+    },
+    {
+      id: 'account-data',
+      title: 'Datos de tu Cuenta',
+      icon: Settings,
+      color: 'bg-gray-500',
+      description: 'Configura los detalles principales de tu cuenta'
+    },
+    {
+      id: 'security',
+      title: 'Seguridad',
+      icon: Shield,
+      color: 'bg-red-500',
+      description: 'Cambia tu contraseña y configura la autenticación'
+    },
+    {
+      id: 'cards',
+      title: 'Tarjetas',
+      icon: CreditCard,
+      color: 'bg-green-500',
+      description: 'Gestiona tus métodos de pago guardados'
+    },
+    {
+      id: 'addresses',
+      title: 'Direcciones',
+      icon: MapPin,
+      color: 'bg-purple-500',
+      description: 'Administra tus direcciones de envío y facturación'
+    },
+    {
+      id: 'privacy',
+      title: 'Privacidad',
+      icon: Lock,
+      color: 'bg-yellow-500',
+      description: 'Controla tu configuración de privacidad y datos'
+    },
+    {
+      id: 'communications',
+      title: 'Comunicaciones',
+      icon: MessageSquare,
+      color: 'bg-indigo-500',
+      description: 'Administra tus preferencias de notificaciones'
+    }
+  ];
 
   return (
-    <div className="profile-container">
-      <aside className="profile-menu">
-        <ul>
-          <li><Link to="/profile">Perfil General</Link></li>
-          <li><Link to="/profile/user-info">Información de Usuario</Link></li>
-          <li><Link to="/profile/account-data">Datos de Cuenta</Link></li>
-          <li><Link to="/profile/cards">Tarjetas</Link></li>
-          <li><Link to="/profile/addresses">Direcciones</Link></li>
-          <li><Link to="/profile/communications">Comunicaciones</Link></li>
-          <li><Link to="/compras">Compras</Link></li>
-          <li><Link to="/historial">Historial</Link></li>
-          <li><Link to="/preguntas">Preguntas</Link></li>
-          <li><Link to="/opiniones">Opiniones</Link></li>
-          <li><Link to="/suscripciones">Suscripciones</Link></li>
-          <li><Link to="/mercado-play">Mercado Play</Link></li>
-          <li><Link to="/vender">Vender</Link></li>
-        </ul>
-      </aside>
+    <div className="profiles-container">
+      <div className="profiles-header">
+        <h1 className="profiles-title">Mi Perfil</h1>
+        <p className="profiles-subtitle">Gestiona tu cuenta y preferencias</p>
+      </div>
 
-      <main className="profile-content">
-        <Outlet context={{ profile, setProfile }} />
-      </main>
+      <div className="profiles-grid">
+        {gridOptions.map((option) => {
+          const IconComponent = option.icon;
+          return (
+            <Link
+              key={option.id}
+              to={`/profile/${option.id}`}
+              className="profiles-grid-item"
+            >
+              <div className={`profiles-icon-container ${option.color}`}>
+                <IconComponent size={24} className="profiles-icon" />
+              </div>
+              <div className="profiles-item-content">
+                <h3 className="profiles-item-title">{option.title}</h3>
+                <p className="profiles-item-description">{option.description}</p>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 };
