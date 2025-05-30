@@ -101,7 +101,7 @@ function Home() {
           <Carousel />
         </div>
       </div>
-     
+  
       <div className="home-container">
         <nav className="category-list" aria-label="Lista de categorías">
           <ul>

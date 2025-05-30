@@ -10,7 +10,7 @@ import './Profile.css'; // Archivo CSS para estilos personalizados
 const Profile = () => {
   const gridOptions = [
     {
-      id: 'Userinfo',
+      id: 'UserInfo',
       title: 'Tu Información',
       icon: User,
       color: 'bg-blue-500',
