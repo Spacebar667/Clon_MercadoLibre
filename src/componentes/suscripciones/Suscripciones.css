@@ -113,3 +113,41 @@
 .suscripciones-seleccionadas ul {
   padding-left: 20px;
 }
+
+@media (max-width: 600px) {
+  .suscripciones-container {
+    padding: 15px 10px;
+  }
+  
+  .suscripciones-input-group {
+    flex-direction: column;
+  }
+  
+  .suscripciones-input-group input,
+  .suscripciones-input-group button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .suscripcion-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .suscripcion-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .btn-toggle,
+  .btn-delete {
+    flex: 1;
+  }
+  
+  .suscripcion-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}

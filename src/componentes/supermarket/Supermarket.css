@@ -26,3 +26,24 @@
   margin: 40px;
   color: #7f8c8d;
 }
+
+@media (max-width: 600px) {
+  .supermarket-container {
+    padding: 10px;
+  }
+  
+  .supermarket-product-grid {
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .supermarket-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .loading-text {
+    font-size: 1rem;
+    margin: 20px;
+  }
+}

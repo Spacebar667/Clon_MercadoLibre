@@ -101,3 +101,37 @@
 .clear-cart-btn:hover {
   background-color: #ab2b28;
 }
+
+@media (max-width: 600px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cart-item img {
+    margin-right: 0;
+    margin-bottom: 12px;
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+
+  .cart-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cart-buttons button {
+    width: 100%;
+  }
+
+  .clear-cart-btn {
+    float: none;
+    width: 100%;
+  }
+
+  .cart-total {
+    text-align: left;
+    margin-top: 20px;
+  }
+}

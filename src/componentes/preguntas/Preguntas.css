@@ -74,3 +74,61 @@
 .pregunta-btn:hover {
   background-color: #2968c8;
 }
+
+@media (max-width: 600px) {
+  .preguntas-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .preguntas-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .pregunta-item {
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .pregunta-textarea {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .pregunta-btn {
+    width: 100%;
+    padding: 0.8rem 0;
+    font-size: 1rem;
+  }
+}
+
+/* Responsive (≤400px) */
+@media (max-width: 400px) {
+  .preguntas-container {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+
+  .preguntas-title {
+    font-size: 1.4rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  .pregunta-textarea {
+    font-size: 0.8rem;
+  }
+
+  .pregunta-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 0;
+  }
+}

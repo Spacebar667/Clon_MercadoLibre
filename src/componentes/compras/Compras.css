@@ -31,3 +31,31 @@
   border-radius: 8px;
   color: #155724;
 }
+
+@media (max-width: 600px) {
+  .compras-container {
+    margin: 1rem;
+    padding: 0.75rem;
+  }
+
+  .producto-a-comprar {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .selector-pago {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .confirmar-compra {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .mensaje-exito {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}

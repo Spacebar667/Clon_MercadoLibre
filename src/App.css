@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .logo {
+    height: 4em;
+    padding: 1em;
+  }
+
+  .card {
+    padding: 1.5em;
+  }
+
+  .read-the-docs {
+    font-size: 14px;
+  }
+}

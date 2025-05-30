@@ -13,3 +13,15 @@
   padding: 1rem;
   border-bottom: 1px solid #ddd;
 }
+
+@media (max-width: 600px) {
+  .historial-container {
+    padding: 1rem;
+  }
+
+  .item-compra {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+}

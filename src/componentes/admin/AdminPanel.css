@@ -114,3 +114,27 @@ button {
 .refresh-btn:hover {
   background-color: #5e35b1;
 }
+
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .users-table-container {
+    overflow-x: auto;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .users-table {
+    min-width: 100%;
+  }
+}

@@ -29,3 +29,13 @@
   border-radius: 0 0 8px 8px;
   pointer-events: none;
 }
+
+@media (max-width: 600px) {
+  .carousel-img {
+    height: 180px;
+  }
+
+  .carousel-img-container::after {
+    height: 40px;
+  }
+}

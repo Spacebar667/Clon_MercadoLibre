@@ -86,3 +86,85 @@
 .bg-purple-500 { background-color: #ffffff; }
 .bg-yellow-500 { background-color: #ffffff; }
 .bg-indigo-500 { background-color: #ffffff; }
+
+@media (max-width: 900px) {
+  .profiles-container {
+    padding: 1.5rem;
+  }
+
+  .profiles-title {
+    font-size: 2rem;
+  }
+
+  .profiles-subtitle {
+    font-size: 1rem;
+  }
+
+  .profiles-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .profiles-grid-item {
+    padding: 1.25rem;
+  }
+
+  .profiles-icon-container {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.75rem;
+  }
+
+  .profiles-item-title {
+    font-size: 1.1rem;
+  }
+
+  .profiles-item-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+}
+
+/* Responsive (≤600px) */
+@media (max-width: 600px) {
+  .profiles-container {
+    padding: 1rem;
+    margin: 0 0.5rem;
+  }
+
+  .profiles-header {
+    margin-bottom: 2rem;
+  }
+
+  .profiles-title {
+    font-size: 1.75rem;
+  }
+
+  .profiles-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .profiles-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .profiles-grid-item {
+    padding: 1rem;
+  }
+
+  .profiles-icon-container {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.5rem;
+  }
+
+  .profiles-item-title {
+    font-size: 1rem;
+  }
+
+  .profiles-item-description {
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+}

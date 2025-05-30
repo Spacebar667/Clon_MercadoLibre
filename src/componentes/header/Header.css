@@ -195,3 +195,15 @@
 .logout-link {
   color: #f44336 !important;
 }
+
+.header{
+  padding: 20px;
+  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  .header{
+    padding: 10px;
+    font-size: 16px;
+  }
+}

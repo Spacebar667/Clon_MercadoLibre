@@ -23,3 +23,20 @@
   border-radius: 4px;
   margin-bottom: 0.5rem;
 }
+@media (max-width: 480px) {
+  .offers-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .offer-card {
+    width: 100%;
+    padding: 0.6rem;
+  }
+
+  .offer-img {
+    height: 120px;
+    margin-bottom: 0.3rem;
+  }
+}

@@ -98,3 +98,42 @@
 .btn-add-cart:active {
   background-color: #0f407f;
 }
+
+@media (max-width: 768px) {
+  .product-card {
+    width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    width: 100%;
+  }
+
+  .image-wrapper {
+    height: 140px;
+  }
+
+  .product-info {
+    padding: 10px;
+    gap: 4px;
+  }
+
+  .product-title {
+    font-size: 0.95rem;
+  }
+
+  .product-price {
+    font-size: 1rem;
+  }
+
+  .product-discount {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+  }
+
+  .btn-add-cart {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+}
