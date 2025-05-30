@@ -9,7 +9,7 @@ import { CartContext } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 
 import "./Home.css";
-import Prueba from "../prueba/Prueba";
+
 
 function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -101,7 +101,7 @@ function Home() {
           <Carousel />
         </div>
       </div>
-      <Prueba />
+     
       <div className="home-container">
         <nav className="category-list" aria-label="Lista de categorías">
           <ul>
